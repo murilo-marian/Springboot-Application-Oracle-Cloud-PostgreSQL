@@ -228,9 +228,10 @@
       </div>
       <div class="form-group mt-3">
         <input
-          type="text"
+          type="file"
           name="imgUrl"
           placeholder="URL da Imagem"
+          accept="image/*"
           class="form-control mr-2"
         />
       </div>
@@ -245,32 +246,28 @@
 
     <script>
       // Script para popular os campos do modal com os dados do produto
-      const editButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
-      editButtons.forEach((button) => {
-        button.addEventListener("click", (e) => {
-          const modal = new bootstrap.Modal(
-            document.getElementById("editProductModal")
-          );
-          // Obtém os valores do produto a partir dos atributos de dados
-          const id = e.target.getAttribute("data-product-id");
-          const name = e.target.getAttribute("data-product-name");
-          const price = e.target.getAttribute("data-product-price");
-          const category = e.target.getAttribute("data-product-category");
-          const vendor = e.target.getAttribute("data-product-vendor");
+      document.addEventListener("click", function (e) {
+        // Verifica se o botão que abriu o modal tem o atributo 'data-bs-toggle="modal"'
+        const button = e.target.closest("[data-bs-toggle='modal']");
+
+        if (button) {
+          // Captura os atributos do botão
+          const id = button.getAttribute("data-product-id");
+          const name = button.getAttribute("data-product-name");
+          const price = button.getAttribute("data-product-price");
+          const category = button.getAttribute("data-product-category");
+          const vendor = button.getAttribute("data-product-vendor");
 
           // Preenche os campos do modal
-          document.getElementById("productName").value = name;
-          document.getElementById("productPrice").value = price;
-          document.getElementById("productCategory").value = category;
-          document.getElementById("productVendor").value = vendor;
+          document.getElementById("productName").value = name || "";
+          document.getElementById("productPrice").value = price || "";
+          document.getElementById("productCategory").value = category || "";
+          document.getElementById("productVendor").value = vendor || "";
 
           // Ajusta a ação do formulário para o produto correto
           const form = document.getElementById("editProductForm");
           form.action = `/products/${id}`;
-
-          // Exibe o modal
-          modal.show();
-        });
+        }
       });
     </script>
   </body>

@@ -1,15 +1,29 @@
 package com.projetocurvello.projetocurvello.product;
 
+//import com.projetocurvello.projetocurvello.OracleCloud.OCIObjectStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+import static java.lang.System.currentTimeMillis;
 
 @Controller
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+
+    //private final OCIObjectStorageService storageService;
+
+//    @Autowired
+//    public ProductController(ProductService productService, OCIObjectStorageService storageService) {
+//        this.productService = productService;
+//        this.storageService = storageService;
+//    }
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -27,6 +41,16 @@ public class ProductController {
         model.addAttribute("newProduct", new Product());
         return "index";
     }
+
+//    @PostMapping
+//    public String addNewProduct(Product product, @RequestParam("image") MultipartFile file) throws IOException {
+//        String fileName = currentTimeMillis() + "_" + product.getName();
+//        String imageUrl = storageService.uploadFile(fileName, file.getInputStream(), file.getSize());
+//
+//        product.setImgUrl(imageUrl);
+//        productService.addNewProduct(product);
+//        return "redirect:/products";
+//    }
 
     @PostMapping
     public String addNewProduct(Product product) {
