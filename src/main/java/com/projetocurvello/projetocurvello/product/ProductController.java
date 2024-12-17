@@ -1,6 +1,6 @@
 package com.projetocurvello.projetocurvello.product;
 
-//import com.projetocurvello.projetocurvello.OracleCloud.OCIObjectStorageService;
+import com.projetocurvello.projetocurvello.OracleCloud.OCIObjectStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -17,18 +17,18 @@ import static java.lang.System.currentTimeMillis;
 public class ProductController {
     private final ProductService productService;
 
-    //private final OCIObjectStorageService storageService;
-
-//    @Autowired
-//    public ProductController(ProductService productService, OCIObjectStorageService storageService) {
-//        this.productService = productService;
-//        this.storageService = storageService;
-//    }
+    private final OCIObjectStorageService storageService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, OCIObjectStorageService storageService) {
         this.productService = productService;
+        this.storageService = storageService;
     }
+
+//    @Autowired
+//    public ProductController(ProductService productService) {
+//        this.productService = productService;
+//    }
 
     @GetMapping
     public String showProductsPage(@RequestParam(defaultValue = "0") int page,
@@ -42,21 +42,21 @@ public class ProductController {
         return "index";
     }
 
-//    @PostMapping
-//    public String addNewProduct(Product product, @RequestParam("image") MultipartFile file) throws IOException {
-//        String fileName = currentTimeMillis() + "_" + product.getName();
-//        String imageUrl = storageService.uploadFile(fileName, file.getInputStream(), file.getSize());
-//
-//        product.setImgUrl(imageUrl);
-//        productService.addNewProduct(product);
-//        return "redirect:/products";
-//    }
-
     @PostMapping
-    public String addNewProduct(Product product) {
+    public String addNewProduct(@RequestParam("image") MultipartFile file, @ModelAttribute Product product) throws IOException {
+        String fileName = currentTimeMillis() + "_" + product.getName();
+        String imageUrl = storageService.uploadFile(fileName, file.getInputStream(), file.getSize());
+
+        product.setImgUrl(imageUrl);
         productService.addNewProduct(product);
         return "redirect:/products";
     }
+
+//    @PostMapping
+//    public String addNewProduct(Product product) {
+//        productService.addNewProduct(product);
+//        return "redirect:/products";
+//    }
 
     @PostMapping("/{id}")
     public String updateProduct(@PathVariable Long id, Product product,

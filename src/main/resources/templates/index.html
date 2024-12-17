@@ -21,6 +21,7 @@
       <thead>
         <tr>
           <th>ID</th>
+          <th>Imagem</th>
           <th>Nome</th>
           <th>Preço</th>
           <th>Categoria</th>
@@ -32,6 +33,9 @@
         <!-- Itera sobre os produtos -->
         <tr th:each="product : ${products}">
           <td th:text="${product.id}"></td>
+          <td>
+            <img th:src="${product.imgUrl}" width="100" height="100"/>
+          </td>
           <td th:text="${product.name}"></td>
           <td th:text="${product.price}"></td>
           <td th:text="${product.category}"></td>
@@ -190,7 +194,12 @@
 
     <!-- Adicionar Novo Produto -->
     <h2>Adicionar Novo Produto</h2>
-    <form th:action="@{/products}" method="post" class="form-inline">
+    <form
+      th:action="@{/products}"
+      method="post"
+      class="form-inline"
+      enctype="multipart/form-data"
+    >
       <div class="form-group mt-3">
         <input
           type="text"
@@ -229,8 +238,8 @@
       <div class="form-group mt-3">
         <input
           type="file"
-          name="imgUrl"
-          placeholder="URL da Imagem"
+          name="image"
+          placeholder="Imagem"
           accept="image/*"
           class="form-control mr-2"
         />
